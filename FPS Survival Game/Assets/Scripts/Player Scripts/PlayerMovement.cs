@@ -6,7 +6,11 @@ public class PlayerMovement : MonoBehaviour
 {
     CharacterController characterController;
     float speed = 5;
+    float jumpForce = 4f;
+    float gravity = 9.8f;
+    float verticalVelocity = 0f;
     Vector3 moveDirection;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,11 +20,12 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        movePlayer();
+        MoveThePlayer();
     }
 
-    void movePlayer()
+    void MoveThePlayer()
     {
+
         moveDirection = new Vector3(
             Input.GetAxis(Axis.HORIZONTAL),
             0,
@@ -29,6 +34,25 @@ public class PlayerMovement : MonoBehaviour
 
         moveDirection *= Time.deltaTime * speed;
 
+        ApplyGravity();
+
         characterController.Move(moveDirection);
+    }
+
+    void ApplyGravity()
+    {
+
+        if (characterController.isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            verticalVelocity = jumpForce;
+        }
+        else
+        {
+            verticalVelocity -= gravity * Time.deltaTime;
+        }
+
+        Debug.Log(verticalVelocity);
+
+        moveDirection.y = verticalVelocity * Time.deltaTime;
     }
 }
