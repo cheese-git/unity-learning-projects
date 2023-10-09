@@ -48,7 +48,10 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            verticalVelocity -= gravity * Time.deltaTime;
+            if (verticalVelocity > -gravity)
+            {
+                verticalVelocity -= gravity * Time.deltaTime;
+            }
         }
 
         Debug.Log(verticalVelocity);
